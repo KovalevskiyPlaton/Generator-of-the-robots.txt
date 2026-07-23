@@ -9,12 +9,12 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
 public class RobotsPage {
-    public final String dropListLocator = "//div[@class='lgt-select-content']";
-    public final String secondDropLocator = "//h2[text()='Правила']/ancestor::div[@style='margin-bottom:25px']" +
+    final String dropListLocator = "//div[@class='lgt-select-content']";
+    final String secondDropLocator = "//div[@style='margin-bottom:25px']" +
             "/child::div[last()]//div[@class='lgt-select-content']";
-    public static final String pickBot = "//div[@title='%s']/div";
-    public static final String pickSecondBot = "//following-sibling::div[@title='%s']/div";
-    public final String crawlRadioButton = "//div[@class='lgt-segmented-item-label'][@title='%s']";
+    final String pickBot = "//div[@title='%s']/div";
+    final String pickSecondBot = "//following-sibling::div[@title='%s']/div";
+    final String crawlRadioButton = "//div[@class='lgt-segmented-item-label'][@title='%s']";
     final String titleText = "Ваш Robots.txt";
     final String copyText = "Robots.txt скопирован!";
     final String robotsTitle = "//h2[text()='Ваш Robots.txt']";
@@ -23,13 +23,13 @@ public class RobotsPage {
     final String copiedMessage = "//span[text() = 'Robots.txt скопирован!']";
     final String areaResult = "#robots";
     final String inputUrl = "//div[text()='URL']/following-sibling::input";
-    final String inputSecondUrl = "//h2[text()='Правила']/ancestor::div[@style='margin-bottom:25px']/child::" +
+    final String inputSecondUrl = "//div[@style='margin-bottom:25px']/child::" +
             "div[last()]//div[text()='URL']/following-sibling::input";
     final String allowRadioButton = "//div[@title='Разрешить']";
-    final String allowSecondRadioButton = "//h2[text()='Правила']/ancestor::div[@style='margin-bottom:25px']/" +
+    final String allowSecondRadioButton = "//div[@style='margin-bottom:25px']/" +
             "child::div[last()]//div[@title='Разрешить']";
     final String disallowRadioButton = "//div[@title='Запретить']";
-    final String disallowSecondRadioButton = "//h2[text()='Правила']/ancestor::div[@style='margin-bottom:25px']/" +
+    final String disallowSecondRadioButton = "//div[@style='margin-bottom:25px']/" +
             "child::div[last()]//div[@title='Запретить']";
     final String addNewRuleButton = "//span[text()='Добавить правило']/ancestor::button";
 
@@ -59,15 +59,14 @@ public class RobotsPage {
     }
 
     public RobotsPage pickInDropListWithScroll(String botName) {
-        $x(dropListLocator).click();
         SelenideElement targetBot = $x(pickBot.formatted(botName));
-        for (int i = 0; i < 100; i++) {
-            if (!targetBot.isDisplayed()) {
-                actions().sendKeys(Keys.ARROW_DOWN).perform();
-            }
+        $x(dropListLocator).click();
+        while (!targetBot.isDisplayed()){
+            actions().sendKeys(Keys.ARROW_DOWN).perform();
         }
         targetBot.click();
-        return this;
+        $x(dropListLocator).click();
+         return this;
     }
 
     public RobotsPage checkCopiedText(String innerTextArea) {
@@ -124,12 +123,11 @@ public class RobotsPage {
     public RobotsPage pickSecondInDropListWithScroll(String botName) {
         $x(secondDropLocator).click();
         SelenideElement targetBot = $x(pickSecondBot.formatted(botName));
-        for (int i = 0; i < 16; i++) {
-            if (!targetBot.isDisplayed()) {
-                actions().sendKeys(Keys.ARROW_DOWN).perform();
-            }
+        while (!targetBot.isDisplayed()){
+            actions().sendKeys(Keys.ARROW_DOWN).perform();
         }
         targetBot.click();
+        $x(secondDropLocator).click();
         return this;
     }
 
